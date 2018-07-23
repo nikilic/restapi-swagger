@@ -1,0 +1,191 @@
+---
+swagger: "2.0"
+info:
+  description: "Ovo je probni API sa kategorijama i komentarima."
+  version: "1.0.0"
+  title: "Kategorije i komentari"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "0.0.0.0:8080"
+basePath: "/v2"
+tags:
+- name: "category"
+  description: ""
+schemes:
+- "https"
+- "http"
+paths:
+  /category:
+    get:
+      tags:
+      - "category"
+      summary: "Lista kategorija"
+      description: ""
+      operationId: "get_cat"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Category"
+      x-swagger-router-controller: "swagger_server.controllers.category_controller"
+    post:
+      tags:
+      - "category"
+      summary: "Dodaj novu kategoriju"
+      description: ""
+      operationId: "add_cat"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Objekat za kategoriju koji treba da se doda u bazu"
+        required: true
+        schema:
+          $ref: "#/definitions/Category"
+      responses:
+        405:
+          description: "Invalid input"
+      x-swagger-router-controller: "swagger_server.controllers.category_controller"
+    put:
+      tags:
+      - "category"
+      summary: "Promeni postojecu kategoriju"
+      description: ""
+      operationId: "update_cat"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Objekat za kategoriju koji treba da se doda u bazu"
+        required: true
+        schema:
+          $ref: "#/definitions/Category"
+      responses:
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Category not found"
+        405:
+          description: "Validation exception"
+      x-swagger-router-controller: "swagger_server.controllers.category_controller"
+    delete:
+      tags:
+      - "category"
+      summary: "Brise kategoriju"
+      description: ""
+      operationId: "delete_cat"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "catId"
+        in: "path"
+        description: "Category id to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Category not found"
+      x-swagger-router-controller: "swagger_server.controllers.category_controller"
+  /comment:
+    get:
+      tags:
+      - "comment"
+      summary: "Lista komentara"
+      description: ""
+      operationId: "get_com"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Comment"
+      x-swagger-router-controller: "swagger_server.controllers.comment_controller"
+    post:
+      tags:
+      - "comment"
+      summary: "Dodaj novi komentar"
+      description: ""
+      operationId: "add_com"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Objekat za komentar koji treba da se doda u bazu"
+        required: true
+        schema:
+          $ref: "#/definitions/Comment"
+      responses:
+        405:
+          description: "Invalid input"
+      x-swagger-router-controller: "swagger_server.controllers.comment_controller"
+securityDefinitions:
+  petstore_auth:
+    type: "oauth2"
+    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
+    flow: "implicit"
+    scopes:
+      write:pets: "modify pets in your account"
+      read:pets: "read your pets"
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+definitions:
+  Category:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+    example:
+      name: "name"
+      id: 0
+    xml:
+      name: "Category"
+  Comment:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      category_id:
+        type: "integer"
+        format: "int64"
+      comment:
+        type: "string"
+    example:
+      category_id: 6
+      comment: "comment"
+      id: 0
+    xml:
+      name: "Category"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
